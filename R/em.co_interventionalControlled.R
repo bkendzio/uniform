@@ -36,9 +36,11 @@
 #' @param smdMethod An optional character string indicating if Hedges g' is adjusted to account for a positive bias for small sample sizes.
 #' Either "hedgesAdjusted" for Hedges adjustd g', or "hedgesUnadjusted" for Hedges unadjusted g'.
 #'
-#' @param combineChangePost An optional logical indicating whether the method by Follmann et al. for obtaining mean change from baseline with standard deviation
-#' from mean baseline, mean postintervention, mean baseline standard deviation, and mean postintervention standard deviation is applied when mean from baseline
-#' with standard deviation is missing. Default is FALSE.
+#' @param combineChangePost An optional logical indicating whether postintervention measurements should be used instead of change from baseline measurements for studies for which
+#' change from baseline measurements cannot be obtained and when the absolute mean difference is used as effect measure. Default is FALSE.
+#'
+#' @return A data frame object that contains study labels,
+#' numbers of observations in the intervention groups, numbers of observations in the control groups, effect measures, and standard errors for studies.
 #'
 #' @examples
 #' data(data2)

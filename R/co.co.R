@@ -2,41 +2,43 @@
 #'
 #' @description Uniforms a differently or incompletely reported continuous outcome across studies included in a meta-analysis.
 #'
-#' @param study A vector with study labels (e.g., 1 for study 1, 2 for study 2, ...).
+#' @param study A vector with study labels (e.g., "1" for study 1, "2" for study 2, ...).
 #'
-#' @param group A vector with group labels (e.g., 1 for intervention group, 2 for control group).
+#' @param group A vector with group labels (e.g., "1" for intervention group, "2" for control group).
 #'
-#' @param t A vector with time points of outcome measurement (e.g., 1 for baseline, 2 for postintervention, and 3 for change from baseline).
+#' @param t A vector with time points of outcome measurement (e.g., "1" for baseline, "2" for postintervention, and "3" for change from baseline).
 #'
-#' @param n A vector with numbers of observations in groups.
+#' @param n A vector with numbers of observations in groups at time points.
 #'
-#' @param mean An optional vector of means of the outcome in groups.
+#' @param mean An optional vector of means of the outcome in groups at time points.
 #'
-#' @param m An optional vector of medians of the outcome in groups.
+#' @param m An optional vector of medians of the outcome in groups at time points.
 #'
-#' @param s An optional vector of standard deviations of the outcome in groups.
+#' @param s An optional vector of standard deviations of the outcome in groups at time points.
 #'
-#' @param se An optional vector of standard errors of the mean of the outcome in groups.
+#' @param se An optional vector of standard errors of the mean of the outcome in groups at time points.
 #'
-#' @param ll95 An optional vector of the lower limits of the 95% confidence interval of the mean outcome in groups.
+#' @param ll95 An optional vector of the lower limits of the 95 percent confidence interval of the mean outcome in groups at time points.
 #'
-#' @param ul95 An optional vector of the upper limits of the 95% confidence interval of the mean outcome in groups.
+#' @param ul95 An optional vector of the upper limits of the 95 percent confidence interval of the mean outcome in groups at time points.
 #'
-#' @param ll90 An optional vector of the lower limits of the 90% confidence interval of the mean outcome in groups.
+#' @param ll90 An optional vector of the lower limits of the 90 percent confidence interval of the mean outcome in groups at time points.
 #'
-#' @param ul90 An optional vector of the upper limits of the 90% confidence interval of the mean outcome in groups.
+#' @param ul90 An optional vector of the upper limits of the 90 percent confidence interval of the mean outcome in groups at time points.
 #'
-#' @param ll99 An optional vector of the lower limits of the 99% confidence interval of the mean outcome in groups.
+#' @param ll99 An optional vector of the lower limits of the 99 percent confidence interval of the mean outcome in groups at time points.
 #'
-#' @param ul99 An optional vector of the upper limits of the 99% confidence interval of the mean outcome in groups.
+#' @param ul99 An optional vector of the upper limits of the 99 percent confidence interval of the mean outcome in groups at time points.
 #'
-#' @param a An optional vector of minima of the outcome in groups.
+#' @param a An optional vector of minima of the outcome in groups at time points.
 #'
-#' @param b An optional vector of maxima of the outcome in groups.
+#' @param b An optional vector of maxima of the outcome in groups at time points.
 #'
-#' @param lq An optional vector of lower quartils of the outcome in groups.
+#' @param lq An optional vector of lower quartils of the outcome in groups at time points.
 #'
-#' @param uq An optional vector of upper quartils of the outcome in groups.
+#' @param uq An optional vector of upper quartils of the outcome in groups at time points.
+#'
+#' @param data An optional data frame containing the study information.
 #'
 #' @param meanSd.meanAB An optional character string indicating which method is used for obtaining mean and standard deviation
 #' from mean and range. Either "range" for the range method (default), or "walterYao" for the method by Walter and Yao.
@@ -54,7 +56,7 @@
 #'  from mean and missing standard deviation by imputation. Either "furukawaEtal" for the method by Furukawa et al. (default), or "marinhoEtal" for the method by Marinho et al..
 #'
 #' @return A data frame object that contains study labels, group labels, time points of outcome measurement,
-#' numbers of observations in groups, means of outcome in groups, standard deviations of outcome in groups.
+#' numbers of observations in groups at time points, means of outcome in groups at time points, standard deviations of outcome in groups at time points.
 #'
 #' @examples
 #' data(data2)
