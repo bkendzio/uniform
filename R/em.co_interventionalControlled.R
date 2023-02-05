@@ -31,6 +31,12 @@
 #' @param tChange A character string that specifies how the elements of the time point vector that define change from baseline measurements
 #'  are labeled (e.g., "3" for change from baseline measurements).
 #'
+#' @param r An optional value between 0 and 1 that specifies the correlation coefficient between baseline and postintervention measurements which is assumed when applying
+#' the method by Follmann et al. to obtain the mean change from baseline with standard deviation from information on baseline and
+#' postintervention measurements in case of missing mean change from baseline with standard deviation. If NULL, r is estimated
+#' based on information from included studies for whom mean and standard deviation are available for baseline and postintervention
+#' as well as the change from baseline.
+#'
 #' @param em An optional character string indicating which summary measure is calculated. Either "md" for mean difference (default), or "smd" for Hedges g' as standardized mean difference.
 #'
 #' @param smdMethod An optional character string indicating if Hedges g' is adjusted to account for a positive bias for small sample sizes.
@@ -43,9 +49,9 @@
 #' numbers of observations in the intervention groups, numbers of observations in the control groups, effect measures, and standard errors for studies.
 #'
 #' @examples
-#' data(data2)
-#' coUniform<-co.co(data=data2)
-#' em<-em.co_interventionalControlled(data=coUniform,groupIntervention=1,groupControl=2,tBaseline=1,tPost=2,tChange=3,em="smd",smdMethod="hedgesAdjusted",combineChangePost=TRUE)
+#' data(dataCoRaw)
+#' dataCoUniform<-co.co(data=dataCoRaw)
+#' dataEm<-em.co_interventionalControlled(data=coUniform,groupIntervention=1,groupControl=2,tBaseline=1,tPost=2,tChange=3,em="smd",smdMethod="hedgesAdjusted",combineChangePost=TRUE)
 #' @export
 
 em.co_interventionalControlled<-function(study,group,t,n,mean,s,data=NULL,groupIntervention,groupControl,tBaseline,tPost,tChange,r=NULL,em="md",smdMethod="hedgesAdjusted",combineChangePost=FALSE)
