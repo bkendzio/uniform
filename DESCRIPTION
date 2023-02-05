@@ -4,7 +4,8 @@ Title: Unification of a Differently or Incompletely Reported Continuous Outcome 
 Version: 0.0.1
 Authors@R: c(
     person("Benjamin", "Kendziora", email = "benjamin.kendziora@med.uni-muenchen.de",role=c("cre","aut")),
-    person("Lorenz", "Uhlmann", role=c("ctb"))
+    person("Lorenz", "Uhlmann", role="ctb")
+  )
 Maintainer: Benjamin Kendziora, M.D., Ph.D. <benjamin.kendziora@med.uni-muenchen.de>
 Description: Allows to uniform a differently or incompletely reported continuous outcome across studies included in a meta-analysis. Unification includes conversion and imputation methods. The main function co.co returns mean and standard deviation for all groups of observation units. Other functions allow to calculate effect measures for each study.
 License: GPL-3
