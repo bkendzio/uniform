@@ -73,7 +73,11 @@ head(dataCoUniform)
 
 # Effect Measure Calculation
 
-Depending on the study design of the studies, different effect measures can be calculated an pooled in a meta-analysis. Version 0.0.1 of the uniform package allows to calculate effect measures for continuous continuous outcome data given by interventional controlled studies. For this purpose, the data frame return by the `co.co` function can be included in the `em.co_interventionalControlled` function. 
+Depending on the study design of the studies, different effect measures can be calculated an pooled in a meta-analysis. Version 0.0.1 of the uniform package allows to calculate effect measures for continuous continuous outcome data given by interventional controlled studies.
+
+## `em.co_interventionalControlled`
+
+For this purpose, the data frame return by the `co.co` function can be included in the `em.co_interventionalControlled` function. 
 
 ```{r}
 dataEm<-em.co_interventionalControlled(data=dataCoUniform,groupIntervention=1,groupControl=2,tBaseline=1,tPost=2,tChange=3,em="smd",smdMethod="hedgesAdjusted",combineChangePost=TRUE)
