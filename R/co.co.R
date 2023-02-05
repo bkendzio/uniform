@@ -2,11 +2,11 @@
 #'
 #' @description Uniforms a differently or incompletely reported continuous outcome across studies included in a meta-analysis.
 #'
-#' @param study A vector with study labels (e.g., "1" for study 1, "2" for study 2, ...).
+#' @param study A vector with study labels (e.g., 1 for study 1, 2 for study 2, ...).
 #'
-#' @param group A vector with group labels (e.g., "1" for intervention group, "2" for control group).
+#' @param group A vector with group labels (e.g., 1 for intervention group, 2 for control group).
 #'
-#' @param t A vector with time points of outcome measurement (e.g., "1" for baseline, "2" for postintervention, and "3" for change from baseline).
+#' @param t A vector with time points of outcome measurement (e.g., 1 for baseline, 2 for postintervention, and 3 for change from baseline).
 #'
 #' @param n A vector with numbers of observations in groups at time points.
 #'
@@ -59,8 +59,8 @@
 #' numbers of observations in groups at time points, means of outcome in groups at time points, standard deviations of outcome in groups at time points.
 #'
 #' @examples
-#' data(data2)
-#' coUniform<-co.co(data=data2)
+#' data(dataCoRaw)
+#' dataCoUniform<-co.co(data=dataCoRaw)
 #' @export
 
 co.co<-function(study,group,t,n,mean,m,s,se,ll95,ul95,ll90,ul90,ll99,ul99,a,b,lq,uq,data=NULL,

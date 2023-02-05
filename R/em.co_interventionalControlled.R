@@ -40,7 +40,7 @@
 #' @param em An optional character string indicating which summary measure is calculated. Either "md" for mean difference (default), or "smd" for Hedges g' as standardized mean difference.
 #'
 #' @param smdMethod An optional character string indicating if Hedges g' is adjusted to account for a positive bias for small sample sizes.
-#' Either "hedgesAdjusted" for Hedges adjustd g', or "hedgesUnadjusted" for Hedges unadjusted g'.
+#' Either "hedgesAdjusted" for Hedges adjusted g', or "hedgesUnadjusted" for Hedges unadjusted g'.
 #'
 #' @param combineChangePost An optional logical indicating whether postintervention measurements should be used instead of change from baseline measurements for studies for which
 #' change from baseline measurements cannot be obtained and when the absolute mean difference is used as effect measure. Default is FALSE.
@@ -51,7 +51,7 @@
 #' @examples
 #' data(dataCoRaw)
 #' dataCoUniform<-co.co(data=dataCoRaw)
-#' dataEm<-em.co_interventionalControlled(data=coUniform,groupIntervention=1,groupControl=2,tBaseline=1,tPost=2,tChange=3,em="smd",smdMethod="hedgesAdjusted",combineChangePost=TRUE)
+#' dataEm<-em.co_interventionalControlled(data=dataCoUniform,groupIntervention=1,groupControl=2,tBaseline=1,tPost=2,tChange=3,em="smd",smdMethod="hedgesAdjusted",combineChangePost=TRUE)
 #' @export
 
 em.co_interventionalControlled<-function(study,group,t,n,mean,s,data=NULL,groupIntervention,groupControl,tBaseline,tPost,tChange,r=NULL,em="md",smdMethod="hedgesAdjusted",combineChangePost=FALSE)

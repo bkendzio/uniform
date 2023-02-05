@@ -1,5 +1,5 @@
 ---
-title: "uniformVignette"
+title: "uniform: Unification of a Differently or Incompletely Reported Continuous Outcome across Studies Included in a Meta-Analysis"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{uniformVignette}
@@ -14,6 +14,84 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r setup, include = FALSE}
 library(uniform)
 ```
+
+```{R,echo=FALSE,results='hide',message=FALSE,include=FALSE, eval=TRUE}
+if (!require(knitr))
+  install.packages("knitr")
+if (!require(devtools))
+  install.packages("devtools")
+```
+
+The goal of uniform is to allow the unification of a differently or incompletely reported continuous outcome across studies included in a meta-analysis so that consistent effect measures can be calculated and pooled. Currently, uniform comprises the following functions:
+
+- `co.co` uniforms a differently or incompletely reported continuous outcome across studies included in a meta-analysis.
+- `em.co_interventionalControlled` calculates effect measures for continuous continuous outcome data given by interventional controlled studies and uniformed by the co.co function.
+
+In the following, there is a step-by-step guide for using the functions of the package.
+
+## Installation
+
+The package uniform can be installed from [GitHub](https://github.com/bkendzio/uniform) and loaded via: 
+
+```{r, message=FALSE, warning=FALSE, results = "hide", eval=FALSE}
+library(devtools)
+devtools::install_github("bkendzio/uniform")
+library(uniform)
+```
+
+## Challenge and Example Data Set
+
+The synthesis of evidence in meta-analyses is done by pooling effect measures from individual studies. Both an effect measure and a measure of dispersion are needed per study for pooling effects across studies. Effect measures are statistical constructs that compare an outcome measured in two groups of patients. Continuous outcomes for groups of observations can be reported differently, with different measures of central tendency (e.g., mean or median per group) and dispersion (e.g., standard deviation vs. interquartile range). In addition, some studies do not report a measure of dispersion at all. These differences in reporting considerably complicate or prevent the calculation of consistent effect measures for pooling the results individual studies in a meta-analysis and may lead to trade-offs that result in the exclusion of relevant studies.
+
+The artificially created example data set (`dataCoRaw`), which is included in the package, illustrates such a situation.
+
+```{r}
+data(dataCoRaw)
+head(dataCoRaw)
+```
+
+This data set contains information of 13 interventional controlled studies that shall be included in a meta-analysis. The studies measured a continuous outcome at baseline (t=1) and postintervention (t=2) and calculated the change from baseline (t=3) for the intervention (group=1) and control group (group=2), respectively. As it is common in reality, the studies reported the continuous outcome differently, with different measures of central tendency (e.g., mean or median) and dispersion (e.g., standard deviation or interquartile range). In addition, some measurements were not reported.
+
+# Unification
+
+## `co.co`
+
+The 'co.co' function uniforms a differently or incompletely reported continuous outcome across studies included in a meta-analysis by converting the provided results for each group to mean and standard deviation where possible. For this purpose, previously introduced conversion and imputation methods are used. 
+
+```{r}
+dataCoUniform <- co.co(data=dataCoRaw)
+```
+
+The function returns a data frame object that contains study labels, group labels, time points of outcome measurement, numbers of observations in groups at time points, means of outcome in groups at time points, standard deviations of outcome in groups at time points.
+
+```{r}
+head(dataCoUniform)
+```
+
+# Effect Measure Calculation
+
+Depending on the study design of the studies, different effect measures can be calculated an pooled in a meta-analysis. Version 0.0.1 of the uniform package allows to calculate effect measures for continuous continuous outcome data given by interventional controlled studies. For this purpose, the data frame return by the `co.co` function can be included in the `em.co_interventionalControlled` function. 
+
+```{r}
+dataEm<-em.co_interventionalControlled(data=dataCoUniform,groupIntervention=1,groupControl=2,tBaseline=1,tPost=2,tChange=3,em="smd",smdMethod="hedgesAdjusted",combineChangePost=TRUE)
+```
+
+- `groupIntervention` is a character string that specifies how the elements of the group vector that define the intervention groups are labeled (e.g., "1" for intervention groups).
+- `groupControl` is a character string that specifies how the elements of the group vector that define the control groups are labeled (e.g., "2" for control groups).
+- `tBaseline` is a character string that specifies how the elements of the time point vector that define baseline measurements are labeled (e.g., "1" for baseline measurements).
+- `tPost` is a character string that specifies how the elements of the time point vector that define postintervention measurements are labeled (e.g., "2" for postintervention measurements).
+- `tChange` is a character string that specifies how the elements of the time point vector that define change from baseline measurements are labeled (e.g., "3" for change from baseline measurements).
+- `em` is an optional character string indicating which summary measure is calculated. Either "md" for mean difference (default), or "smd" for Hedges g' as standardized mean difference.
+- `smdMethod` is an optional character string indicating if Hedges g' is adjusted to account for a positive bias for small sample sizes. Either "hedgesAdjusted" for Hedges adjusted g', or "hedgesUnadjusted" for Hedges unadjusted g'.
+- `combineChangePost` is an optional logical indicating whether postintervention measurements should be used instead of change from baseline measurements for studies for which hange from baseline measurements cannot be obtained and when the absolute mean difference is used as effect measure. Default is FALSE.
+
+```{r}
+head(dataEm)
+```
+
+The function returns a data frame object that contains study labels, numbers of observations in the intervention groups, numbers of observations in the control groups, effect measures, and standard errors for the studies included in the meta-analysis.
+
+Afterwards, the effect measures can easily be pooled by using functions of other packages, e.g. the `metagen` function of the great meta package by Dr. Guido Schwarzer. 

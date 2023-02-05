@@ -1,6 +1,6 @@
 #' Continuous outcome data of studies included in a meta-analysis
 #'
-#' Artificially generated data set with data of 25 interventional controlled studies that are included in a meta-analysis. The studies measured a
+#' Artificially generated data set with data of 13 interventional controlled studies that are included in a meta-analysis. The studies measured a
 #' continuous outcome at baseline and postintervention and calculated the change from baseline for the intervention and control group, respectively.
 #' As it is common in reality, the studies reported the continuous outcome differently, with different measures of central tendency (e.g., mean or median)
 #' and dispersion (e.g., standard deviation or interquartile range). In addition, some measurements were not reported. The data set provides
