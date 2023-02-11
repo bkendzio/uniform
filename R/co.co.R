@@ -10,35 +10,35 @@
 #'
 #' @param n A vector with numbers of observations in groups at time points.
 #'
-#' @param mean An optional vector of means of the outcome in groups at time points.
+#' @param mean A vector of means of the outcome in groups at time points.
 #'
-#' @param m An optional vector of medians of the outcome in groups at time points.
+#' @param m A vector of medians of the outcome in groups at time points.
 #'
-#' @param s An optional vector of standard deviations of the outcome in groups at time points.
+#' @param s A vector of standard deviations of the outcome in groups at time points.
 #'
-#' @param se An optional vector of standard errors of the mean of the outcome in groups at time points.
+#' @param se A vector of standard errors of the mean of the outcome in groups at time points.
 #'
 #' @param ll95 An optional vector of the lower limits of the 95 percent confidence interval of the mean outcome in groups at time points.
 #'
 #' @param ul95 An optional vector of the upper limits of the 95 percent confidence interval of the mean outcome in groups at time points.
 #'
-#' @param ll90 An optional vector of the lower limits of the 90 percent confidence interval of the mean outcome in groups at time points.
+#' @param ll90 A vector of the lower limits of the 90 percent confidence interval of the mean outcome in groups at time points.
 #'
-#' @param ul90 An optional vector of the upper limits of the 90 percent confidence interval of the mean outcome in groups at time points.
+#' @param ul90 A vector of the upper limits of the 90 percent confidence interval of the mean outcome in groups at time points.
 #'
-#' @param ll99 An optional vector of the lower limits of the 99 percent confidence interval of the mean outcome in groups at time points.
+#' @param ll99 A vector of the lower limits of the 99 percent confidence interval of the mean outcome in groups at time points.
 #'
-#' @param ul99 An optional vector of the upper limits of the 99 percent confidence interval of the mean outcome in groups at time points.
+#' @param ul99 A vector of the upper limits of the 99 percent confidence interval of the mean outcome in groups at time points.
 #'
-#' @param a An optional vector of minima of the outcome in groups at time points.
+#' @param a A vector of minima of the outcome in groups at time points.
 #'
-#' @param b An optional vector of maxima of the outcome in groups at time points.
+#' @param b A vector of maxima of the outcome in groups at time points.
 #'
-#' @param lq An optional vector of lower quartils of the outcome in groups at time points.
+#' @param lq A vector of lower quartils of the outcome in groups at time points.
 #'
-#' @param uq An optional vector of upper quartils of the outcome in groups at time points.
+#' @param uq A vector of upper quartils of the outcome in groups at time points.
 #'
-#' @param data An optional data frame containing the study information.
+#' @param data A data frame containing the study information.
 #'
 #' @param meanSd.meanAB An optional character string indicating which method is used for obtaining mean and standard deviation
 #' from mean and range. Either "range" for the range method (default), or "walterYao" for the method by Walter and Yao.

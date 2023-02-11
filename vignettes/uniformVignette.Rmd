@@ -44,28 +44,63 @@ library(uniform)
 
 ## Challenge and Example Data Set
 
-The synthesis of evidence in meta-analyses is done by pooling effect measures from individual studies. Both an effect measure and a measure of dispersion are needed per study for pooling effects across studies. Effect measures are statistical constructs that compare an outcome measured in two groups of patients. Continuous outcomes for groups of observations can be reported differently, with different measures of central tendency (e.g., mean or median per group) and dispersion (e.g., standard deviation vs. interquartile range). In addition, some studies do not report a measure of dispersion at all. These differences in reporting considerably complicate or prevent the calculation of consistent effect measures for pooling the results individual studies in a meta-analysis and may lead to trade-offs that result in the exclusion of relevant studies.
+The synthesis of evidence in meta-analyses is done by pooling effect measures from individual studies. Both an effect measure and a measure of dispersion are needed per study for pooling effects across studies. Effect measures are statistical constructs that measure the strength of the relationship between two variables in a population, e.g. the strength of the link between exposure and outcome. Continuous outcomes for groups of observations can be reported differently, with different measures of central tendency (e.g., mean or median per group) and dispersion (e.g., standard deviation vs. interquartile range). In addition, some studies do not report a measure of dispersion at all. These differences in reporting considerably complicate or prevent the calculation of consistent effect measures for pooling the results individual studies in a meta-analysis and may lead to trade-offs that result in the exclusion of relevant studies.
 
-The artificially created example data set (`dataCoRaw`), which is included in the package, illustrates such a situation.
+The artificially created example data set (`dataCoRaw`), which is included in the package, illustrates such a situation. The data set contains information of 13 interventional controlled studies that shall be included in a meta-analysis. The studies measured a continuous outcome at baseline (t=1) and postintervention (t=2) and calculated the change from baseline (t=3) for an intervention (group=1) and a control group (group=2), respectively. As it is common in reality, the studies reported the continuous outcome differently, with different measures of central tendency (e.g., mean or median) and dispersion (e.g., standard deviation or interquartile range). In addition, some measurements were not reported. The reported measures of central tendency and dispersion of the outcome of the first 6 patient groups can be viewed after running the following code:
 
 ```{r}
 data(dataCoRaw)
 head(dataCoRaw)
 ```
-
-This data set contains information of 13 interventional controlled studies that shall be included in a meta-analysis. The studies measured a continuous outcome at baseline (t=1) and postintervention (t=2) and calculated the change from baseline (t=3) for the intervention (group=1) and control group (group=2), respectively. As it is common in reality, the studies reported the continuous outcome differently, with different measures of central tendency (e.g., mean or median) and dispersion (e.g., standard deviation or interquartile range). In addition, some measurements were not reported.
+- `study`: An integer vector with study labels.
+- `group`: An integer vector with group labels.
+-`t`: An integer vector with time points of outcome measurement.
+- `n`: An integer vector with numbers of observations in groups at time points.
+- `mean`: A vector of means of the outcome in groups at time points.
+- `m`: A vector of medians of the outcome in groups at time points.
+- `m`: A vector of standard deviations of the outcome in groups at time points.
+- `se`: A vector of standard errors of the mean of the outcome in groups at time points.
+- `ll95`: A vector of the lower limits of the 95 percent confidence interval of the mean outcome in groups at time points.
+- `ul95`: A vector of the upper limits of the 95 percent confidence interval of the mean outcome in groups at time points.
+- `ll95`: A vector of the lower limits of the 90 percent confidence interval of the mean outcome in groups at time points.
+- `ul95`: A vector of the upper limits of the 90 percent confidence interval of the mean outcome in groups at time points.
+- `ll99`: A vector of the lower limits of the 99 percent confidence interval of the mean outcome in groups at time points.
+- `ul95`: A vector of the upper limits of the 99 percent confidence interval of the mean outcome in groups at time points.
+- `a`: A vector of minima of the outcome in groups at time points.
+- `b`: A vector of maxima of the outcome in groups at time points.
+- `lq`: A vector of lower quartils of the outcome in groups at time points.
+- `uq`: A vector of upper quartils of the outcome in groups at time points.
 
 # Unification
 
 ## `co.co`
 
-The 'co.co' function uniforms a differently or incompletely reported continuous outcome across studies included in a meta-analysis by converting the provided results for each group to mean and standard deviation where possible. For this purpose, previously introduced conversion and imputation methods are used. 
+The `co.co` function uniforms a differently or incompletely reported continuous outcome across studies included in a meta-analysis by converting the provided results for each group to mean and standard deviation where possible. For this purpose, conversion and imputation methods previously introduced in the literature are used. If the data is structured similar to the example data set with the same names for for the variables, the function can be used by defining the data set in a single argument:
 
 ```{r}
 dataCoUniform <- co.co(data=dataCoRaw)
 ```
 
-The function returns a data frame object that contains study labels, group labels, time points of outcome measurement, numbers of observations in groups at time points, means of outcome in groups at time points, standard deviations of outcome in groups at time points.
+If the data set is structured differently with different names for the variables, the function can be used by defining vectors of study labels, group labels, time points of outcome measurement, numbers of observations, and measures of central tendency and dispersion separately:
+
+```{r}
+dataCoUniform <- co.co(study=dataCoRaw$study,group=dataCoRaw$group,t=dataCoRaw$t,
+                       n=dataCoRaw$n,mean=dataCoRaw$mean,m=dataCoRaw$m,
+                       s=dataCoRaw$s,se=dataCoRaw$se,ll95=dataCoRaw$ll95,
+                       ul95=dataCoRaw$ul95,ll90=dataCoRaw$ll90,ul90=dataCoRaw$ul90,
+                       ll99=dataCoRaw$ll99,ul99=dataCoRaw$ul99,a=dataCoRaw$a,
+                       b=dataCoRaw$b,lq=dataCoRaw$lq,uq=dataCoRaw$uq)
+```
+
+The following optional arguments can be used to choose between different methods of conversion and imputation:
+
+- `meanSd.meanAB`: An optional character string indicating which method is used for obtaining mean and standard deviation from mean and range. Either "range" for the range method (default), or "walterYao" for the method by Walter and Yao.
+- `meanSd.mIqrRange`: An optional character string indicating which method is used for obtaining mean and standard deviation from median, interquartile range, and range. Either "bland" for the method by bland, or "wanEtal" for the method by Wan et al. (default).
+- `meanSd.mIqr`: An optional character string indicating which method is used for obtaining mean and standard deviation from median and interquartile range. Either "wanEtal" for the method by Wan et al. (default), or "cochrane" for Cochrane method.
+- `meanSd.mRange`: An optional character string indicating which method is used for obtaining mean and standard deviation from median and range. Either "hozoDjulbegovicHozo" for the method by Hozo, Djulbegovic, and Hozo, or "wanEtal" for the method by Wan et al. (default).
+- `meanSd.mean`: An optional character string indicating which method is used for obtaining mean and standard deviation from mean and missing standard deviation by imputation. Either "furukawaEtal" for the method by Furukawa et al. (default), or "marinhoEtal" for the method by Marinho et al..
+
+The function returns a data frame object that contains study labels, group labels, time points of outcome measurement, numbers of observations in groups at time points, means of outcome in groups at time points, standard deviations of outcome in groups at time points:
 
 ```{r}
 head(dataCoUniform)
@@ -77,25 +112,41 @@ Depending on the study design of the studies, different effect measures can be c
 
 ## `em.co_interventionalControlled`
 
-For this purpose, the data frame return by the `co.co` function can be included in the `em.co_interventionalControlled` function. 
+For this purpose, the data frame object returned by the `co.co` function can be included in the `em.co_interventionalControlled` function. The following information must also be passed into the function:
+
+- `groupIntervention`: A character string that specifies how the elements of the group vector that define the intervention groups are labeled (e.g., "1" for intervention groups).
+- `groupControl`: A character string that specifies how the elements of the group vector that define the control groups are labeled (e.g., "2" for control groups).
+- `tBaseline`: A character string that specifies how the elements of the time point vector that define baseline measurements are labeled (e.g., "1" for baseline measurements).
+- `tPost`: A character string that specifies how the elements of the time point vector that define postintervention measurements are labeled (e.g., "2" for postintervention measurements).
+- `tChange`: A character string that specifies how the elements of the time point vector that define change from baseline measurements are labeled (e.g., "3" for change from baseline measurements).
+
+The function can then be executed by:
 
 ```{r}
-dataEm<-em.co_interventionalControlled(data=dataCoUniform,groupIntervention=1,groupControl=2,tBaseline=1,tPost=2,tChange=3,em="smd",smdMethod="hedgesAdjusted",combineChangePost=TRUE)
+dataEm<-em.co_interventionalControlled(data=dataCoUniform,
+                                       groupIntervention=1,groupControl=2,tBaseline=1,
+                                       tPost=2,tChange=3)
 ```
 
-- `groupIntervention` is a character string that specifies how the elements of the group vector that define the intervention groups are labeled (e.g., "1" for intervention groups).
-- `groupControl` is a character string that specifies how the elements of the group vector that define the control groups are labeled (e.g., "2" for control groups).
-- `tBaseline` is a character string that specifies how the elements of the time point vector that define baseline measurements are labeled (e.g., "1" for baseline measurements).
-- `tPost` is a character string that specifies how the elements of the time point vector that define postintervention measurements are labeled (e.g., "2" for postintervention measurements).
-- `tChange` is a character string that specifies how the elements of the time point vector that define change from baseline measurements are labeled (e.g., "3" for change from baseline measurements).
-- `em` is an optional character string indicating which summary measure is calculated. Either "md" for mean difference (default), or "smd" for Hedges g' as standardized mean difference.
-- `smdMethod` is an optional character string indicating if Hedges g' is adjusted to account for a positive bias for small sample sizes. Either "hedgesAdjusted" for Hedges adjusted g', or "hedgesUnadjusted" for Hedges unadjusted g'.
-- `combineChangePost` is an optional logical indicating whether postintervention measurements should be used instead of change from baseline measurements for studies for which hange from baseline measurements cannot be obtained and when the absolute mean difference is used as effect measure. Default is FALSE.
+The following optional arguments can be used to change the type of effect measure and adjust the calculation:
+
+- `em`: An optional character string indicating which summary measure is calculated. Either "md" for mean difference (default), or "smd" for Hedges g' as standardized mean difference.
+- `smdMethod`: An optional character string indicating if Hedges g' is adjusted to account for a positive bias for small sample sizes. Either "hedgesAdjusted" for Hedges adjusted g', or "hedgesUnadjusted" for Hedges unadjusted g'.
+- `combineChangePost`: An optional logical indicating whether postintervention measurements should be used instead of change from baseline measurements for studies for which hange from baseline measurements cannot be obtained and when the absolute mean difference is used as effect measure. Default is FALSE.
+
+With usage of optional arguments, the function may be executed by:
+
+```{r}
+dataEm<-em.co_interventionalControlled(data=dataCoUniform,groupIntervention=1,
+                                       groupControl=2,tBaseline=1,tPost=2,tChange=3,
+                                       em="smd",smdMethod="hedgesAdjusted",
+                                       combineChangePost=TRUE)
+```
+
+The function returns a data frame object that contains study labels, numbers of observations in the intervention groups, numbers of observations in the control groups, effect measures, and standard errors for the studies included in the meta-analysis.
 
 ```{r}
 head(dataEm)
 ```
 
-The function returns a data frame object that contains study labels, numbers of observations in the intervention groups, numbers of observations in the control groups, effect measures, and standard errors for the studies included in the meta-analysis.
-
-Afterwards, the effect measures can easily be pooled by using functions of other packages, e.g. the `metagen` function of the great meta package by Dr. Guido Schwarzer..
+Afterwards, the effect measures can easily be pooled by using functions of other packages, e.g. the `metagen` function of the meta package by Dr. Guido Schwarzer.
