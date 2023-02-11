@@ -98,4 +98,4 @@ head(dataEm)
 
 The function returns a data frame object that contains study labels, numbers of observations in the intervention groups, numbers of observations in the control groups, effect measures, and standard errors for the studies included in the meta-analysis.
 
-Afterwards, the effect measures can easily be pooled by using functions of other packages, e.g. the `metagen` function of the great meta package by Dr. Guido Schwarzer. 
+Afterwards, the effect measures can easily be pooled by using functions of other packages, e.g. the `metagen` function of the great meta package by Dr. Guido Schwarzer..
