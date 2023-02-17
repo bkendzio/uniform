@@ -1,6 +1,7 @@
 ---
 title: "uniform: Unification of a Differently or Incompletely Reported Continuous Outcome across Studies Included in a Meta-Analysis"
 output: rmarkdown::html_vignette
+bibliography: uniformVignetteBibliography.bib
 vignette: >
   %\VignetteIndexEntry{uniformVignette}
   %\VignetteEngine{knitr::rmarkdown}
@@ -44,7 +45,7 @@ library(uniform)
 
 ## Challenge and Example Data Set
 
-The synthesis of evidence in meta-analyses is done by pooling effect measures from individual studies. Both an effect measure and a measure of dispersion are needed per study for pooling effects across studies. Effect measures are statistical constructs that measure the strength of the relationship between two variables in a population, e.g. the strength of the link between exposure and outcome. Continuous outcomes for groups of observations can be reported differently, with different measures of central tendency (e.g., mean or median per group) and dispersion (e.g., standard deviation vs. interquartile range). In addition, some studies do not report a measure of dispersion at all. These differences in reporting considerably complicate or prevent the calculation of consistent effect measures for pooling the results individual studies in a meta-analysis and may lead to trade-offs that result in the exclusion of relevant studies.
+The synthesis of evidence in meta-analyses is done by pooling effect measures from individual studies. Both an effect measure and a measure of dispersion are needed per study for pooling effects across studies. Effect measures are statistical constructs that measure the strength of the relationship between two variables in a population, e.g. the strength of the link between exposure and outcome [@tripepi2007measures]. Most commonly, an outcome is campared between an exposed and a nonexposed group for calculating an effect measure [@higgins2019choosing] Continuous outcomes for groups of observations can be reported differently, with different measures of central tendency (e.g., mean or median per group) and dispersion (e.g., standard deviation vs. interquartile range). In addition, some studies do not report a measure of dispersion at all. These differences in reporting considerably complicate or prevent the calculation of consistent effect measures for pooling the results of individual studies in a meta-analysis and may lead to trade-offs that result in the exclusion of relevant studies.
 
 The artificially created example data set (`dataCoRaw`), which is included in the package, illustrates such a situation. The data set contains information of 13 interventional controlled studies that shall be included in a meta-analysis. The studies measured a continuous outcome at baseline (t=1) and postintervention (t=2) and calculated the change from baseline (t=3) for an intervention (group=1) and a control group (group=2), respectively. As it is common in reality, the studies reported the continuous outcome differently, with different measures of central tendency (e.g., mean or median) and dispersion (e.g., standard deviation or interquartile range). In addition, some measurements were not reported. The reported measures of central tendency and dispersion of the outcome of the first 6 patient groups can be viewed after running the following code:
 
@@ -75,7 +76,29 @@ head(dataCoRaw)
 
 ## `co.co`
 
-The `co.co` function uniforms a differently or incompletely reported continuous outcome across studies included in a meta-analysis by converting the provided results for each group to mean and standard deviation where possible. For this purpose, conversion and imputation methods previously introduced in the literature are used. If the data is structured similar to the example data set with the same names for for the variables, the function can be used by defining the data set in a single argument:
+The `co.co` function uniforms a differently or incompletely reported continuous outcome across studies included in a meta-analysis by converting the provided results for each group to mean and standard deviation where possible. For this purpose, conversion and imputation methods previously introduced in the literature are used:
+
+- Obtaining Mean and Standard Deviation from Mean and Standard Error
+  - Algebraic Conversion Method
+- Obtaining Mean and Standard Deviation from Mean and Confidence Interval
+  - Algebraic Conversion Method
+- Obtaining Mean and Standard Deviation from Mean and Range
+  - The "Range"-Method [@higgins2019choosing]
+  - Method by Walter and Yao [@walter2007effect]
+- Obtaining Mean and Standard Deviation form Median and Range
+  - Method by Hozo et al. [@hozo2005estimating]
+  - Method by Wan et al. [@wan2014estimating]
+- Obtaining Mean and Standard Deviation from Median and Interquartile Range
+  - Method by Wan et al. [@wan2014estimating]
+  - Cochrane Method [@higgins2019choosing]
+- Obtaining Mean and Standard Deviation form Median, Range, and Interquartile Range
+  - Method by Bland [@bland2015estimating]
+  - Method by Wan et al. [@wan2014estimating]
+- Obtaining Mean and Standard Deviation from Mean and Missing Standard Deviation by Imputation
+  - Method by Furukawa et al. [@furukawa2006imputing]
+  - Method by Marinho et al. [@marinho2003fluoride]
+
+If the data is structured similar to the example data set with the same names for for the variables, the function can be used by defining the data set in a single argument:
 
 ```{r}
 dataCoUniform <- co.co(data=dataCoRaw)
@@ -112,7 +135,9 @@ Depending on the study design of the studies, different effect measures can be c
 
 ## `em.co_interventionalControlled`
 
-For this purpose, the data frame object returned by the `co.co` function can be included in the `em.co_interventionalControlled` function. The following information must also be passed into the function:
+For this purpose, the data frame object returned by the `co.co` function can be included in the `em.co_interventionalControlled` function. The function calculates the absolute difference in means between the intervention and control group or the standardized difference in means Hedges' g, either adjusted for small sample bias or unadjusted [@hedges1985statistical]. Before, the method by Follmann et al. for obtaining the mean change from baseline with standard deviation from mean baseline with standard deviation and mean postintervention with standard deviation is used to calculate the mean change from baseline with standard deviation in case of missed reporting [@follmann1992variance]. 
+
+In addition to the data frame object returned by the `co.co` function, the following information must also be passed into the `em.co_interventionalControlled` function:
 
 - `groupIntervention`: A character string that specifies how the elements of the group vector that define the intervention groups are labeled (e.g., "1" for intervention groups).
 - `groupControl`: A character string that specifies how the elements of the group vector that define the control groups are labeled (e.g., "2" for control groups).
@@ -128,11 +153,11 @@ dataEm<-em.co_interventionalControlled(data=dataCoUniform,
                                        tPost=2,tChange=3)
 ```
 
-The following optional arguments can be used to change the type of effect measure and adjust the calculation:
+The following optional arguments can be used to change the type of effect measure and specify the calculation:
 
 - `em`: An optional character string indicating which summary measure is calculated. Either "md" for mean difference (default), or "smd" for Hedges g' as standardized mean difference.
 - `smdMethod`: An optional character string indicating if Hedges g' is adjusted to account for a positive bias for small sample sizes. Either "hedgesAdjusted" for Hedges adjusted g', or "hedgesUnadjusted" for Hedges unadjusted g'.
-- `combineChangePost`: An optional logical indicating whether postintervention measurements should be used instead of change from baseline measurements for studies for which hange from baseline measurements cannot be obtained and when the absolute mean difference is used as effect measure. Default is FALSE.
+- `combineChangePost`: An optional logical indicating whether postintervention measurements should be used instead of change from baseline measurements for studies for which change from baseline measurements cannot be obtained and when the absolute mean difference is used as effect measure. Default is FALSE.
 
 With usage of optional arguments, the function may be executed by:
 
@@ -149,4 +174,6 @@ The function returns a data frame object that contains study labels, numbers of 
 head(dataEm)
 ```
 
-Afterwards, the effect measures can easily be pooled by using functions of other packages, e.g. the `metagen` function of the meta package by Dr. Guido Schwarzer.
+Afterwards, the effect measures can easily be pooled by using functions of other packages, e.g. the `metagen` function of the meta package [@balduzzi2019perform].
+
+# References
