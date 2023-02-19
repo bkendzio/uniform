@@ -26,7 +26,7 @@ if (!require(devtools))
   install.packages("devtools")
 ```
 
-The goal of uniform is to allow the unification of a differently or incompletely reported continuous outcome across studies included in a meta-analysis so that consistent effect measures can be calculated and pooled. Currently, uniform comprises the following functions:
+The goals of uniform are the unification of a differently or incompletely reported continuous outcome across studies included in a meta-analysis and calculation of consistent effect measures so that they can be pooled. Currently, uniform comprises the following functions:
 
 - `co.co` uniforms a differently or incompletely reported continuous outcome across studies included in a meta-analysis.
 - `em.co_interventionalControlled` calculates effect measures for continuous continuous outcome data given by interventional controlled studies and uniformed by the co.co function.
@@ -45,7 +45,7 @@ library(uniform)
 
 ## Challenge and Example Data Set
 
-The synthesis of evidence in meta-analyses is done by pooling effect measures from individual studies. Both an effect measure and a measure of dispersion are needed per study for pooling effects across studies. Effect measures are statistical constructs that measure the strength of the relationship between two variables in a population, e.g. the strength of the link between exposure and outcome [@tripepi2007measures]. Most commonly, an outcome is campared between an exposed and a nonexposed group for calculating an effect measure [@higgins2019choosing] Continuous outcomes for groups of observations can be reported differently, with different measures of central tendency (e.g., mean or median per group) and dispersion (e.g., standard deviation vs. interquartile range). In addition, some studies do not report a measure of dispersion at all. These differences in reporting considerably complicate or prevent the calculation of consistent effect measures for pooling the results of individual studies in a meta-analysis and may lead to trade-offs that result in the exclusion of relevant studies.
+The synthesis of evidence in meta-analyses is done by pooling effect measures from individual studies. Both an effect measure and a measure of dispersion are needed per study for pooling effects across studies. Effect measures are statistical constructs that measure the strength of the relationship between two variables in a population, e.g. the strength of the link between exposure and outcome [@tripepi2007measures]. Most commonly, an outcome is campared between an exposed and a nonexposed group for calculating an effect measure [@higgins2019choosing]. Continuous outcomes for groups of observations can be reported differently, with different measures of central tendency (e.g., mean or median per group) and dispersion (e.g., standard deviation vs. interquartile range). In addition, some studies do not report a measure of dispersion at all. These differences in reporting considerably complicate or prevent the calculation of consistent effect measures for pooling the results of individual studies in a meta-analysis and may lead to trade-offs that result in the exclusion of relevant studies.
 
 The artificially created example data set (`dataCoRaw`), which is included in the package, illustrates such a situation. The data set contains information of 13 interventional controlled studies that shall be included in a meta-analysis. The studies measured a continuous outcome at baseline (t=1) and postintervention (t=2) and calculated the change from baseline (t=3) for an intervention (group=1) and a control group (group=2), respectively. As it is common in reality, the studies reported the continuous outcome differently, with different measures of central tendency (e.g., mean or median) and dispersion (e.g., standard deviation or interquartile range). In addition, some measurements were not reported. The reported measures of central tendency and dispersion of the outcome of the first 6 patient groups can be viewed after running the following code:
 
@@ -55,11 +55,11 @@ head(dataCoRaw)
 ```
 - `study`: An integer vector with study labels.
 - `group`: An integer vector with group labels.
--`t`: An integer vector with time points of outcome measurement.
+- `t`: An integer vector with time points of outcome measurement.
 - `n`: An integer vector with numbers of observations in groups at time points.
 - `mean`: A vector of means of the outcome in groups at time points.
 - `m`: A vector of medians of the outcome in groups at time points.
-- `m`: A vector of standard deviations of the outcome in groups at time points.
+- `s`: A vector of standard deviations of the outcome in groups at time points.
 - `se`: A vector of standard errors of the mean of the outcome in groups at time points.
 - `ll95`: A vector of the lower limits of the 95 percent confidence interval of the mean outcome in groups at time points.
 - `ul95`: A vector of the upper limits of the 95 percent confidence interval of the mean outcome in groups at time points.
@@ -118,9 +118,9 @@ dataCoUniform <- co.co(study=dataCoRaw$study,group=dataCoRaw$group,t=dataCoRaw$t
 The following optional arguments can be used to choose between different methods of conversion and imputation:
 
 - `meanSd.meanAB`: An optional character string indicating which method is used for obtaining mean and standard deviation from mean and range. Either "range" for the range method (default), or "walterYao" for the method by Walter and Yao.
-- `meanSd.mIqrRange`: An optional character string indicating which method is used for obtaining mean and standard deviation from median, interquartile range, and range. Either "bland" for the method by bland, or "wanEtal" for the method by Wan et al. (default).
+- `meanSd.mIqrRange`: An optional character string indicating which method is used for obtaining mean and standard deviation from median, interquartile range, and range. Either "Bland" for the method by bland, or "wanEtal" for the method by Wan et al. (default).
 - `meanSd.mIqr`: An optional character string indicating which method is used for obtaining mean and standard deviation from median and interquartile range. Either "wanEtal" for the method by Wan et al. (default), or "cochrane" for Cochrane method.
-- `meanSd.mRange`: An optional character string indicating which method is used for obtaining mean and standard deviation from median and range. Either "hozoDjulbegovicHozo" for the method by Hozo, Djulbegovic, and Hozo, or "wanEtal" for the method by Wan et al. (default).
+- `meanSd.mRange`: An optional character string indicating which method is used for obtaining mean and standard deviation from median and range. Either "hozoEtal" for the method by Hozo et al., or "wanEtal" for the method by Wan et al. (default).
 - `meanSd.mean`: An optional character string indicating which method is used for obtaining mean and standard deviation from mean and missing standard deviation by imputation. Either "furukawaEtal" for the method by Furukawa et al. (default), or "marinhoEtal" for the method by Marinho et al..
 
 The function returns a data frame object that contains study labels, group labels, time points of outcome measurement, numbers of observations in groups at time points, means of outcome in groups at time points, standard deviations of outcome in groups at time points:
@@ -135,9 +135,9 @@ Depending on the study design of the studies, different effect measures can be c
 
 ## `em.co_interventionalControlled`
 
-For this purpose, the data frame object returned by the `co.co` function can be included in the `em.co_interventionalControlled` function. The function calculates the absolute difference in means between the intervention and control group or the standardized difference in means Hedges' g, either adjusted for small sample bias or unadjusted [@hedges1985statistical]. Before, the method by Follmann et al. for obtaining the mean change from baseline with standard deviation from mean baseline with standard deviation and mean postintervention with standard deviation is used to calculate the mean change from baseline with standard deviation in case of missed reporting [@follmann1992variance]. 
+The data frame object returned by the `co.co` function can be included in the `em.co_interventionalControlled` function. The function calculates the absolute difference in means between the intervention and control group or the standardized difference in means Hedges' g, either adjusted for small sample bias or unadjusted [@hedges1985statistical]. Before, the method by Follmann et al. for obtaining the mean change from baseline with standard deviation from mean baseline with standard deviation and mean postintervention with standard deviation is used to calculate the mean change from baseline with standard deviation in case of missed reporting [@follmann1992variance]. 
 
-In addition to the data frame object returned by the `co.co` function, the following information must also be passed into the `em.co_interventionalControlled` function:
+In addition to the data frame object returned by the `co.co` function, the following information must be passed into the `em.co_interventionalControlled` function:
 
 - `groupIntervention`: A character string that specifies how the elements of the group vector that define the intervention groups are labeled (e.g., "1" for intervention groups).
 - `groupControl`: A character string that specifies how the elements of the group vector that define the control groups are labeled (e.g., "2" for control groups).
@@ -149,8 +149,8 @@ The function can then be executed by:
 
 ```{r}
 dataEm<-em.co_interventionalControlled(data=dataCoUniform,
-                                       groupIntervention=1,groupControl=2,tBaseline=1,
-                                       tPost=2,tChange=3)
+                                       groupIntervention="1",groupControl="2",tBaseline="1",
+                                       tPost="2",tChange="3")
 ```
 
 The following optional arguments can be used to change the type of effect measure and specify the calculation:
@@ -162,8 +162,8 @@ The following optional arguments can be used to change the type of effect measur
 With usage of optional arguments, the function may be executed by:
 
 ```{r}
-dataEm<-em.co_interventionalControlled(data=dataCoUniform,groupIntervention=1,
-                                       groupControl=2,tBaseline=1,tPost=2,tChange=3,
+dataEm<-em.co_interventionalControlled(data=dataCoUniform,groupIntervention="1",
+                                       groupControl="2",tBaseline="1",tPost="2",tChange="3",
                                        em="smd",smdMethod="hedgesAdjusted",
                                        combineChangePost=TRUE)
 ```

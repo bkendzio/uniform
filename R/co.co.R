@@ -50,7 +50,7 @@
 #'  from median and interquartile range. Either "wanEtal" for the method by Wan et al. (default), or "cochrane" for Cochrane method.
 #'
 #' @param meanSd.mRange An optional character string indicating which method is used for obtaining mean and standard deviation
-#'  from median and range. Either "hozoDjulbegovicHozo" for the method by Hozo, Djulbegovic, and Hozo, or "wanEtal" for the method by Wan et al. (default).
+#'  from median and range. Either "hozoEtal" for the method by Hozo et al. or "wanEtal" for the method by Wan et al. (default).
 #'
 #' @param meanSd.mean An optional character string indicating which method is used for obtaining mean and standard deviation
 #'  from mean and missing standard deviation by imputation. Either "furukawaEtal" for the method by Furukawa et al. (default), or "marinhoEtal" for the method by Marinho et al..
@@ -196,11 +196,11 @@ co.co<-function(study,group,t,n,mean,m,s,se,ll95,ul95,ll90,ul90,ll99,ul99,a,b,lq
             ,s)
 
   #Obtaining Mean and Standard Deviation from Median and Range
-  ## Method by Hozo, Djulbegovic, and Hozo
-  mean<-ifelse(is.na(mean)&is.na(s)&!is.na(m)&!is.na(a)&!is.na(b)&meanSd.mRange=="hozoDjulbegovicHozo",
+  ## Method by Hozo et al.
+  mean<-ifelse(is.na(mean)&is.na(s)&!is.na(m)&!is.na(a)&!is.na(b)&meanSd.mRange=="hozoEtal",
                ifelse(n<=25,(a+2*m+b)/4,m)
                ,mean)
-  s<-ifelse(is.na(mean)&is.na(s)&!is.na(m)&!is.na(a)&!is.na(b)&meanSd.mRange=="hozoDjulbegovicHozo",
+  s<-ifelse(is.na(mean)&is.na(s)&!is.na(m)&!is.na(a)&!is.na(b)&meanSd.mRange=="hozoEtal",
             ifelse(n<=15,sqrt(1/12*(((a+2*m+b)^2/4)+(b-a)^2)),
                    ifelse(n>15 & n<=70,(b-a)/4,(b-a)/6))
             ,s)

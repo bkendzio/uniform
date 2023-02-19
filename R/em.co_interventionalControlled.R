@@ -77,7 +77,7 @@ em.co_interventionalControlled<-function(study,group,t,n,mean,s,data=NULL,groupI
                  direction="wide")
 
 
-  # Obtaining Mean Change from Baseline with Standard Deviation from Mean Baseline, Mean Postintervention, Mean Baseline Standard Deviation, and Mean Postintervention Standard Deviation
+  # Obtaining Mean Change from Baseline with Standard Deviation from Mean Baseline with Standard Deviation and Mean Postintervention with Standard Deviation
   ## Method by Follmann et al.
   data4$mean.3<-ifelse(is.na(data4$mean.3)&!is.na(data4$mean.1)&!is.na(data4$mean.2),
                        data4$mean.2-data4$mean.1
