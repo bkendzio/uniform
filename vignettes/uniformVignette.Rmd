@@ -76,7 +76,7 @@ head(dataCoRaw)
 
 ## `co.co`
 
-The `co.co` function uniforms a differently or incompletely reported continuous outcome across studies included in a meta-analysis by converting the provided results for each group to mean and standard deviation where possible. For this purpose, conversion and imputation methods previously introduced in the literature are used:
+The `co.co` function uniforms a differently or incompletely reported continuous outcome across studies included in a meta-analysis by converting the provided results for each group to mean and standard deviation where possible. For this purpose, conversion and imputation methods previously introduced in the literature are used: 
 
 - Obtaining Mean and Standard Deviation from Mean and Standard Error by Algebraic Conversion
 - Obtaining Mean and Standard Deviation from Mean and Confidence Interval by Algebraic Conversion
