@@ -26,7 +26,7 @@ if (!require(devtools))
   install.packages("devtools")
 ```
 
-The goals of uniform are the unification of a differently or incompletely reported continuous outcome across studies included in a meta-analysis and calculation of consistent effect measures so that they can be pooled. Currently, uniform comprises the following functions:
+The goals of _uniform_ are the unification of a differently or incompletely reported continuous outcome across studies included in a meta-analysis and calculation of consistent effect measures so that they can be pooled. Currently, _uniform_ comprises the following functions:
 
 - `co.co` uniforms a differently or incompletely reported continuous outcome across studies included in a meta-analysis.
 - `em.co_interventionalControlled` calculates effect measures for continuous continuous outcome data given by interventional controlled studies and uniformed by the co.co function.
@@ -35,7 +35,7 @@ In the following, there is a step-by-step guide for using the functions of the p
 
 ## Installation
 
-The package uniform can be installed from [GitHub](https://github.com/bkendzio/uniform) and loaded via: 
+The package _uniform_ can be installed from [GitHub](https://github.com/bkendzio/uniform) and loaded via: 
 
 ```{r, message=FALSE, warning=FALSE, results = "hide", eval=FALSE}
 library(devtools)
@@ -96,7 +96,7 @@ The `co.co` function uniforms a differently or incompletely reported continuous 
   - Method by Furukawa et al. [@furukawa2006imputing]
   - Method by Marinho et al. [@marinho2003fluoride]
 
-If the data is structured similar to the example data set with the same names for for the variables, the function can be used by defining the data set in a single argument:
+If the data is structured similar to the example data set with the same names for the variables, the function can be used by defining the data set in a single argument:
 
 ```{r}
 dataCoUniform <- co.co(data=dataCoRaw)
@@ -129,11 +129,11 @@ head(dataCoUniform)
 
 # Effect Measure Calculation
 
-Depending on the study design of the studies, different effect measures can be calculated an pooled in a meta-analysis. Version 0.0.1 of the uniform package allows to calculate effect measures for continuous outcome data given by interventional controlled studies.
+Depending on the study design of the studies, different effect measures can be calculated and pooled in a meta-analysis. Version 0.0.1 of the _uniform_ package allows to calculate effect measures for continuous outcome data given by interventional controlled studies.
 
 ## `em.co_interventionalControlled`
 
-The data frame object returned by the `co.co` function can be included in the `em.co_interventionalControlled` function. The function calculates the absolute difference in means between the intervention and control group or the standardized difference in means Hedges' g, either adjusted for small sample bias or unadjusted [@hedges1985statistical]. Before, the method by Follmann et al. for obtaining the mean change from baseline with standard deviation from mean baseline with standard deviation and mean postintervention with standard deviation is used to calculate the mean change from baseline with standard deviation in case of missed reporting [@follmann1992variance]. 
+The data frame returned by the `co.co` function can be included in the `em.co_interventionalControlled` function. The function calculates the absolute difference in means between the intervention and control group or the standardized difference in means Hedges' g, either adjusted for small sample bias or unadjusted [@hedges1985statistical]. Before, the method by Follmann et al. for obtaining the mean change from baseline with standard deviation from mean baseline with standard deviation and mean postintervention with standard deviation is used to calculate the mean change from baseline with standard deviation in case of missed reporting [@follmann1992variance]. 
 
 In addition to the data frame object returned by the `co.co` function, the following information must be passed into the `em.co_interventionalControlled` function:
 
